@@ -56,25 +56,25 @@ struct cpvQa {
     for (const auto& clu : clusters) {
       static constexpr std::string_view modules[] = {"_M2", "_M3", "_M4"};
       static_for<0, 2>([&](auto mod) {
-	  constexpr int index = mod.value; 
-	  if (index != clu.moduleNumber() - 2) {
-	    return;
-	  }
-	  cluPerEvent[index]++;
-	  histos.get<TH2>(HIST("hPosXZ") + HIST(modules[index]))->Fill(clu.posX(), clu.posZ());
-	  histos.get<TH1>(HIST("hAmplitude") + HIST(modules[index]))->Fill(clu.amplitude());
-	  histos.get<TH1>(HIST("hPadMultiplicity") + HIST(modules[index]))->Fill(clu.padMult());
-	});
+        constexpr int index = mod.value;
+        if (index != clu.moduleNumber() - 2) {
+          return;
+        }
+        cluPerEvent[index]++;
+        histos.get<TH2>(HIST("hPosXZ") + HIST(modules[index]))->Fill(clu.posX(), clu.posZ());
+        histos.get<TH1>(HIST("hAmplitude") + HIST(modules[index]))->Fill(clu.amplitude());
+        histos.get<TH1>(HIST("hPadMultiplicity") + HIST(modules[index]))->Fill(clu.padMult());
+      });
       histos.get<TH1>(HIST("hAmplitude"))->Fill(clu.amplitude());
       histos.get<TH1>(HIST("hPadMultiplicity"))->Fill(clu.padMult());
     }
-    
+
     histos.get<TH1>(HIST("hClustersPerEvent_M2"))->Fill(cluPerEvent[0]);
     histos.get<TH1>(HIST("hClustersPerEvent_M3"))->Fill(cluPerEvent[1]);
     histos.get<TH1>(HIST("hClustersPerEvent_M4"))->Fill(cluPerEvent[2]);
   }
 }; // struct cpvQa
-  
+
 WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
 {
   return WorkflowSpec{
